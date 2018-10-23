@@ -25,6 +25,8 @@ public class ParabolicView extends ViewGroup{
     private int time = 1000;
     private float beforeTime = 0;
 
+    private ValueAnimator valueAnimator;
+
     public ParabolicView(Context context) {
         this(context, null);
     }
@@ -85,7 +87,7 @@ public class ParabolicView extends ViewGroup{
     }
 
     public void startAnim(){
-        ValueAnimator valueAnimator = ValueAnimator.ofObject(new ParabolicEvaluator(), 0, 0);
+        valueAnimator = ValueAnimator.ofObject(new ParabolicEvaluator(), 0, 0);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -97,6 +99,11 @@ public class ParabolicView extends ViewGroup{
         valueAnimator.setDuration(time);
         valueAnimator.setRepeatCount(Animation.INFINITE);
         valueAnimator.start();
+    }
+
+    public void stopAnim() {
+        valueAnimator.end();
+        valueAnimator.removeAllUpdateListeners();
     }
 
     public class ParabolicEvaluator implements TypeEvaluator<Integer> {
